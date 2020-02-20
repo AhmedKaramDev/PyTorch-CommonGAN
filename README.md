@@ -7,14 +7,16 @@ Collection of PyTorch implementations of Generative Adversarial Network varietie
 <b>See also:</b> [Keras-GAN](https://github.com/eriklindernoren/Keras-GAN)
 
 #### This Repo Forked From PyTorch GAN Master 
-### What is new ?
+### What Did I Add ?
    * Select the best GAN algorithms
    * Add an article for each algorithm
    * Add another parser --output to create the output folder
-   * Add dataset description on the README file  
+   * Add dataset description on the `README` file
+   * How to change MNIST dataset into real image dataset
+   * Add `resize_images.py` file to   
 ## Table of Contents
   * [Installation](#installation)
-  * [[Dataset]](#dataset)
+  * [Dataset](#dataset)
   * [Implementations](#implementations)
     + [Auxiliary Classifier GAN](#auxiliary-classifier-gan)
     + [BEGAN](#began)
@@ -42,7 +44,7 @@ The data folder must be in this structure
     
     Data Folder
         |_ Dataset_folder
-                        |_ Iamges_folder
+                        |_ Images_folder
                                         |_ x1.png
                                            x2.png
                                            ......
