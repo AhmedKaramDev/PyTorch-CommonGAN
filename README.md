@@ -7,13 +7,14 @@ Collection of PyTorch implementations of Generative Adversarial Network varietie
 <b>See also:</b> [Keras-GAN](https://github.com/eriklindernoren/Keras-GAN)
 
 #### This Repo Forked From PyTorch GAN Master 
-### What Did I Add ?
+### What Did I Add ?(AhmedKaramDev)
    * Select the best GAN algorithms
    * Add an article for each algorithm
    * Add another parser --output to create the output folder
    * Add dataset description on the `README` file
    * How to change MNIST dataset into real image dataset
-   * Add `resize_images.py` file to   
+   * Add `resize_images.py` file to
+      
 ## Table of Contents
   * [Installation](#installation)
   * [Dataset](#dataset)
@@ -73,7 +74,7 @@ By this code
     data_dir = 'data/dataset_name'
     dataloader = torch.utils.data.DataLoader(
     datasets.ImageFolder(
-        dara_dir,
+        data_dir,
         transform=transforms.Compose(
             [transforms.Resize(opt.img_size), transforms.ToTensor(), transforms.Normalize([0.485, 0.456, 0.406] , [0.229, 0.224, 0.225])]
         ),
