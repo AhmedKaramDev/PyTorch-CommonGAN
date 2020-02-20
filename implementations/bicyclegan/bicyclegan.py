@@ -33,6 +33,7 @@ parser.add_argument("--n_cpu", type=int, default=8, help="number of cpu threads 
 parser.add_argument("--img_height", type=int, default=128, help="size of image height")
 parser.add_argument("--img_width", type=int, default=128, help="size of image width")
 parser.add_argument("--channels", type=int, default=3, help="number of image channels")
+parser.add_argument("--output", type=str, default="images", help="output of images")
 parser.add_argument("--latent_dim", type=int, default=8, help="number of latent codes")
 parser.add_argument("--sample_interval", type=int, default=400, help="interval between saving generator samples")
 parser.add_argument("--checkpoint_interval", type=int, default=-1, help="interval between model checkpoints")
@@ -42,7 +43,7 @@ parser.add_argument("--lambda_kl", type=float, default=0.01, help="kullback-leib
 opt = parser.parse_args()
 print(opt)
 
-os.makedirs("images/%s" % opt.dataset_name, exist_ok=True)
+os.makedirs("{}/%s".format(opt.output) % opt.dataset_name, exist_ok=True)
 os.makedirs("saved_models/%s" % opt.dataset_name, exist_ok=True)
 
 cuda = True if torch.cuda.is_available() else False
@@ -118,7 +119,7 @@ def sample_images(batches_done):
         img_sample = img_sample.view(1, *img_sample.shape)
         # Concatenate with previous samples vertically
         img_samples = img_sample if img_samples is None else torch.cat((img_samples, img_sample), -2)
-    save_image(img_samples, "images/%s/%s.png" % (opt.dataset_name, batches_done), nrow=8, normalize=True)
+    save_image(img_samples, "{}/%s/%s.png".format(opt.output) % (opt.dataset_name, batches_done), nrow=8, normalize=True)
     generator.train()
 
 

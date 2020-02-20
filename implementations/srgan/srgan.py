@@ -28,8 +28,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 
-os.makedirs("images", exist_ok=True)
-os.makedirs("saved_models", exist_ok=True)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--epoch", type=int, default=0, help="epoch to start training from")
@@ -44,9 +42,13 @@ parser.add_argument("--n_cpu", type=int, default=8, help="number of cpu threads 
 parser.add_argument("--hr_height", type=int, default=256, help="high res. image height")
 parser.add_argument("--hr_width", type=int, default=256, help="high res. image width")
 parser.add_argument("--channels", type=int, default=3, help="number of image channels")
+parser.add_argument("--output", type=str, default="images", help="output of images")
 parser.add_argument("--sample_interval", type=int, default=100, help="interval between saving image samples")
 parser.add_argument("--checkpoint_interval", type=int, default=-1, help="interval between model checkpoints")
 opt = parser.parse_args()
+os.makedirs("{}".format(opt.output), exist_ok=True)
+os.makedirs("saved_models", exist_ok=True)
+
 print(opt)
 
 cuda = torch.cuda.is_available()
@@ -160,7 +162,7 @@ for epoch in range(opt.epoch, opt.n_epochs):
             gen_hr = make_grid(gen_hr, nrow=1, normalize=True)
             imgs_lr = make_grid(imgs_lr, nrow=1, normalize=True)
             img_grid = torch.cat((imgs_lr, gen_hr), -1)
-            save_image(img_grid, "images/%d.png" % batches_done, normalize=False)
+            save_image(img_grid, "{}/%d.png".format(opt.output) % batches_done, normalize=False)
 
     if opt.checkpoint_interval != -1 and epoch % opt.checkpoint_interval == 0:
         # Save model checkpoints

@@ -34,6 +34,7 @@ parser.add_argument("--n_cpu", type=int, default=8, help="number of cpu threads 
 parser.add_argument("--img_height", type=int, default=256, help="size of image height")
 parser.add_argument("--img_width", type=int, default=256, help="size of image width")
 parser.add_argument("--channels", type=int, default=3, help="number of image channels")
+parser.add_argument("--output", type=str, default="images", help="output of images")
 parser.add_argument("--sample_interval", type=int, default=100, help="interval between saving generator outputs")
 parser.add_argument("--checkpoint_interval", type=int, default=-1, help="interval between saving model checkpoints")
 parser.add_argument("--n_residual_blocks", type=int, default=9, help="number of residual blocks in generator")
@@ -43,7 +44,7 @@ opt = parser.parse_args()
 print(opt)
 
 # Create sample and checkpoint directories
-os.makedirs("images/%s" % opt.dataset_name, exist_ok=True)
+os.makedirs("{}/%s".format(opt.output) % opt.dataset_name, exist_ok=True)
 os.makedirs("saved_models/%s" % opt.dataset_name, exist_ok=True)
 
 # Losses
@@ -148,7 +149,7 @@ def sample_images(batches_done):
     fake_B = make_grid(fake_B, nrow=5, normalize=True)
     # Arange images along y-axis
     image_grid = torch.cat((real_A, fake_B, real_B, fake_A), 1)
-    save_image(image_grid, "images/%s/%s.png" % (opt.dataset_name, batches_done), normalize=False)
+    save_image(image_grid, "{}/%s/%s.png".format(opt.output) % (opt.dataset_name, batches_done), normalize=False)
 
 
 # ----------

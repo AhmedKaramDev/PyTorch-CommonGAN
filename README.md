@@ -1,50 +1,83 @@
 <p align="center"><img src="assets/logo.png" width="480"\></p>
 
+
 ## PyTorch-GAN
 Collection of PyTorch implementations of Generative Adversarial Network varieties presented in research papers. Model architectures will not always mirror the ones proposed in the papers, but I have chosen to focus on getting the core ideas covered instead of getting every layer configuration right. Contributions and suggestions of GANs to implement are very welcomed.
 
 <b>See also:</b> [Keras-GAN](https://github.com/eriklindernoren/Keras-GAN)
 
+#### This Repo Forked From PyTorch GAN Master 
+### What is new ?
+   * Select the best GAN algorithms
+   * Add an article for each algorithm
+   * Add another parser --output to create the output folder
+   * Add dataset description on the README file  
 ## Table of Contents
   * [Installation](#installation)
+  * [[Dataset]](#dataset)
   * [Implementations](#implementations)
     + [Auxiliary Classifier GAN](#auxiliary-classifier-gan)
-    + [Adversarial Autoencoder](#adversarial-autoencoder)
     + [BEGAN](#began)
     + [BicycleGAN](#bicyclegan)
     + [Boundary-Seeking GAN](#boundary-seeking-gan)
-    + [Cluster GAN](#cluster-gan)
     + [Conditional GAN](#conditional-gan)
-    + [Context-Conditional GAN](#context-conditional-gan)
-    + [Context Encoder](#context-encoder)
     + [Coupled GAN](#coupled-gan)
     + [CycleGAN](#cyclegan)
-    + [Deep Convolutional GAN](#deep-convolutional-gan)
-    + [DiscoGAN](#discogan)
-    + [DRAGAN](#dragan)
     + [DualGAN](#dualgan)
-    + [Energy-Based GAN](#energy-based-gan)
     + [Enhanced Super-Resolution GAN](#enhanced-super-resolution-gan)
-    + [GAN](#gan)
-    + [InfoGAN](#infogan)
     + [Least Squares GAN](#least-squares-gan)
     + [MUNIT](#munit)
     + [Pix2Pix](#pix2pix)
-    + [PixelDA](#pixelda)
     + [Relativistic GAN](#relativistic-gan)
-    + [Semi-Supervised GAN](#semi-supervised-gan)
-    + [Softmax GAN](#softmax-gan)
-    + [StarGAN](#stargan)
     + [Super-Resolution GAN](#super-resolution-gan)
     + [UNIT](#unit)
-    + [Wasserstein GAN](#wasserstein-gan)
     + [Wasserstein GAN GP](#wasserstein-gan-gp)
-    + [Wasserstein GAN DIV](#wasserstein-gan-div)
-
 ## Installation
-    $ git clone https://github.com/eriklindernoren/PyTorch-GAN
-    $ cd PyTorch-GAN/
-    $ sudo pip3 install -r requirements.txt
+    git clone https://github.com/eriklindernoren/PyTorch-GAN
+    cd PyTorch-GAN/
+    pip install -r requirements.txt
+
+## dataset
+The data folder must be in this structure
+    
+    Data Folder
+        |_ Dataset_folder
+                        |_ Iamges_folder
+                                        |_ x1.png
+                                           x2.png
+                                           ......
+                                           xy.png
+                                           
+        
+The images must be in the same size to resize the images
+    
+    python resize_images.py  --data data/datafolder --image_size 128
+        
+Change From MNIST to real images by replace this 
+
+    dataloader = torch.utils.data.DataLoader(
+    datasets.MNIST(
+        "../../data/mnist",
+        train=True,
+        download=True,
+        transform=transforms.Compose(
+            [transforms.Resize(opt.img_size), transforms.ToTensor(), transforms.Normalize([0.5], [0.5])]
+        ),
+    ),
+    batch_size=opt.batch_size,
+    shuffle=True,)
+By this code
+
+    data_dir = 'data/dataset_name'
+    dataloader = torch.utils.data.DataLoader(
+    datasets.ImageFolder(
+        dara_dir,
+        transform=transforms.Compose(
+            [transforms.Resize(opt.img_size), transforms.ToTensor(), transforms.Normalize([0.485, 0.456, 0.406] , [0.229, 0.224, 0.225])]
+        ),
+    ),
+    batch_size=opt.batch_size,
+    shuffle=True,)
 
 ## Implementations   
 ### Auxiliary Classifier GAN
@@ -58,32 +91,17 @@ Synthesizing high resolution photorealistic images has been a long-standing chal
 
 [[Paper]](https://arxiv.org/abs/1610.09585) [[Code]](implementations/acgan/acgan.py)
 
+[[Article]](https://subscription.packtpub.com/book/big_data_and_business_intelligence/9781788629416/5/ch05lvl1sec31/auxiliary-classifier-gan-acgan)
 #### Run Example
 ```
-$ cd implementations/acgan/
-$ python3 acgan.py
+cd implementations/acgan/
+python acgan.py
 ```
 
 <p align="center">
     <img src="assets/acgan.gif" width="360"\>
 </p>
 
-### Adversarial Autoencoder
-_Adversarial Autoencoder_
-
-#### Authors
-Alireza Makhzani, Jonathon Shlens, Navdeep Jaitly, Ian Goodfellow, Brendan Frey
-
-#### Abstract
-n this paper, we propose the "adversarial autoencoder" (AAE), which is a probabilistic autoencoder that uses the recently proposed generative adversarial networks (GAN) to perform variational inference by matching the aggregated posterior of the hidden code vector of the autoencoder with an arbitrary prior distribution. Matching the aggregated posterior to the prior ensures that generating from any part of prior space results in meaningful samples. As a result, the decoder of the adversarial autoencoder learns a deep generative model that maps the imposed prior to the data distribution. We show how the adversarial autoencoder can be used in applications such as semi-supervised classification, disentangling style and content of images, unsupervised clustering, dimensionality reduction and data visualization. We performed experiments on MNIST, Street View House Numbers and Toronto Face datasets and show that adversarial autoencoders achieve competitive results in generative modeling and semi-supervised classification tasks.
-
-[[Paper]](https://arxiv.org/abs/1511.05644) [[Code]](implementations/aae/aae.py)
-
-#### Run Example
-```
-$ cd implementations/aae/
-$ python3 aae.py
-```
 
 ### BEGAN
 _BEGAN: Boundary Equilibrium Generative Adversarial Networks_
@@ -96,42 +114,40 @@ We propose a new equilibrium enforcing method paired with a loss derived from th
 
 [[Paper]](https://arxiv.org/abs/1703.10717) [[Code]](implementations/began/began.py)
 
+[[Article]](https://medium.com/heuritech/began-state-of-the-art-generation-of-faces-with-generative-adversarial-networks-1b71f8c23a1d)
 #### Run Example
 ```
-$ cd implementations/began/
-$ python3 began.py
+cd implementations/began/
+python began.py
 ```
-
 ### BicycleGAN
 _Toward Multimodal Image-to-Image Translation_
 
 #### Authors
 Jun-Yan Zhu, Richard Zhang, Deepak Pathak, Trevor Darrell, Alexei A. Efros, Oliver Wang, Eli Shechtman
-
 #### Abstract
 Many image-to-image translation problems are ambiguous, as a single input image may correspond to multiple possible outputs. In this work, we aim to model a \emph{distribution} of possible outputs in a conditional generative modeling setting. The ambiguity of the mapping is distilled in a low-dimensional latent vector, which can be randomly sampled at test time. A generator learns to map the given input, combined with this latent code, to the output. We explicitly encourage the connection between output and the latent code to be invertible. This helps prevent a many-to-one mapping from the latent code to the output during training, also known as the problem of mode collapse, and produces more diverse results. We explore several variants of this approach by employing different training objectives, network architectures, and methods of injecting the latent code. Our proposed method encourages bijective consistency between the latent encoding and output modes. We present a systematic comparison of our method and other variants on both perceptual realism and diversity.
 
 [[Paper]](https://arxiv.org/abs/1711.11586) [[Code]](implementations/bicyclegan/bicyclegan.py)
 
+[[Article]](https://junyanz.github.io/BicycleGAN/)
 <p align="center">
     <img src="assets/bicyclegan_architecture.jpg" width="800"\>
 </p>
 
 #### Run Example
 ```
-$ cd data/
-$ bash download_pix2pix_dataset.sh edges2shoes
-$ cd ../implementations/bicyclegan/
-$ python3 bicyclegan.py
+cd data/
+bash download_pix2pix_dataset.sh edges2shoes
+cd ../implementations/bicyclegan/
+python bicyclegan.py
 ```
-
 <p align="center">
     <img src="assets/bicyclegan.png" width="480"\>
 </p>
 <p align="center">
     Various style translations by varying the latent code.
 </p>
-
 
 ### Boundary-Seeking GAN
 _Boundary-Seeking Generative Adversarial Networks_
@@ -144,45 +160,12 @@ Generative adversarial networks (GANs) are a learning framework that rely on tra
 
 [[Paper]](https://arxiv.org/abs/1702.08431) [[Code]](implementations/bgan/bgan.py)
 
+[[Article]](https://www.microsoft.com/en-us/research/blog/boundary-seeking-gans-new-method-adversarial-generation-discrete-data/)
 #### Run Example
 ```
-$ cd implementations/bgan/
-$ python3 bgan.py
+cd implementations/bgan/
+python bgan.py
 ```
-
-### Cluster GAN
-_ClusterGAN: Latent Space Clustering in Generative Adversarial Networks_
-
-#### Authors
-Sudipto Mukherjee, Himanshu Asnani, Eugene Lin, Sreeram Kannan
-
-#### Abstract
-Generative Adversarial networks (GANs) have obtained remarkable success in many unsupervised learning tasks and
-unarguably, clustering is an important unsupervised learning problem. While one can potentially exploit the
-latent-space back-projection in GANs to cluster, we demonstrate that the cluster structure is not retained in the
-GAN latent space.  In this paper, we propose ClusterGAN as a new mechanism for clustering using GANs. By sampling
-latent variables from a mixture of one-hot encoded variables and continuous latent variables, coupled with an
-inverse network (which projects the data to the latent space) trained jointly with a clustering specific loss, we
-are able to achieve clustering in the latent space. Our results show a remarkable phenomenon that GANs can preserve
-latent space interpolation across categories, even though the discriminator is never exposed to such vectors. We
-compare our results with various clustering baselines and demonstrate superior performance on both synthetic and
-real datasets.
-
-[[Paper]](https://arxiv.org/abs/1809.03627) [[Code]](implementations/cluster_gan/clustergan.py)
-
-Code based on a full PyTorch [[implementation]](https://github.com/zhampel/clusterGAN).
-
-#### Run Example
-```
-$ cd implementations/cluster_gan/
-$ python3 clustergan.py
-```
-
-<p align="center">
-    <img src="assets/cluster_gan.gif" width="360"\>
-</p>
-
-
 ### Conditional GAN
 _Conditional Generative Adversarial Nets_
 
@@ -194,56 +177,15 @@ Generative Adversarial Nets [8] were recently introduced as a novel way to train
 
 [[Paper]](https://arxiv.org/abs/1411.1784) [[Code]](implementations/cgan/cgan.py)
 
+[[Article]](https://golden.com/wiki/Conditional_generative_adversarial_network_(cGAN))
 #### Run Example
 ```
-$ cd implementations/cgan/
-$ python3 cgan.py
+cd implementations/cgan/
+python cgan.py
 ```
 
 <p align="center">
     <img src="assets/cgan.gif" width="360"\>
-</p>
-
-### Context-Conditional GAN
-_Semi-Supervised Learning with Context-Conditional Generative Adversarial Networks_
-
-#### Authors
-Emily Denton, Sam Gross, Rob Fergus
-
-#### Abstract
-We introduce a simple semi-supervised learning approach for images based on in-painting using an adversarial loss. Images with random patches removed are presented to a generator whose task is to fill in the hole, based on the surrounding pixels. The in-painted images are then presented to a discriminator network that judges if they are real (unaltered training images) or not. This task acts as a regularizer for standard supervised training of the discriminator. Using our approach we are able to directly train large VGG-style networks in a semi-supervised fashion. We evaluate on STL-10 and PASCAL datasets, where our approach obtains performance comparable or superior to existing methods.
-
-[[Paper]](https://arxiv.org/abs/1611.06430) [[Code]](implementations/ccgan/ccgan.py)
-
-#### Run Example
-```
-$ cd implementations/ccgan/
-$ python3 ccgan.py
-```
-
-### Context Encoder
-_Context Encoders: Feature Learning by Inpainting_
-
-#### Authors
-Deepak Pathak, Philipp Krahenbuhl, Jeff Donahue, Trevor Darrell, Alexei A. Efros
-
-#### Abstract
-We present an unsupervised visual feature learning algorithm driven by context-based pixel prediction. By analogy with auto-encoders, we propose Context Encoders -- a convolutional neural network trained to generate the contents of an arbitrary image region conditioned on its surroundings. In order to succeed at this task, context encoders need to both understand the content of the entire image, as well as produce a plausible hypothesis for the missing part(s). When training context encoders, we have experimented with both a standard pixel-wise reconstruction loss, as well as a reconstruction plus an adversarial loss. The latter produces much sharper results because it can better handle multiple modes in the output. We found that a context encoder learns a representation that captures not just appearance but also the semantics of visual structures. We quantitatively demonstrate the effectiveness of our learned features for CNN pre-training on classification, detection, and segmentation tasks. Furthermore, context encoders can be used for semantic inpainting tasks, either stand-alone or as initialization for non-parametric methods.
-
-[[Paper]](https://arxiv.org/abs/1604.07379) [[Code]](implementations/context_encoder/context_encoder.py)
-
-#### Run Example
-```
-$ cd implementations/context_encoder/
-<follow steps at the top of context_encoder.py>
-$ python3 context_encoder.py
-```
-
-<p align="center">
-    <img src="assets/context_encoder.png" width="640"\>
-</p>
-<p align="center">
-    Rows: Masked | Inpainted | Original | Masked | Inpainted | Original
 </p>
 
 ### Coupled GAN
@@ -257,10 +199,11 @@ We propose coupled generative adversarial network (CoGAN) for learning a joint d
 
 [[Paper]](https://arxiv.org/abs/1606.07536) [[Code]](implementations/cogan/cogan.py)
 
+[[Article]](https://wiseodd.github.io/techblog/2017/02/18/coupled_gan/)
 #### Run Example
 ```
-$ cd implementations/cogan/
-$ python3 cogan.py
+cd implementations/cogan/
+python cogan.py
 ```
 
 <p align="center">
@@ -281,16 +224,18 @@ Image-to-image translation is a class of vision and graphics problems where the 
 
 [[Paper]](https://arxiv.org/abs/1703.10593) [[Code]](implementations/cyclegan/cyclegan.py)
 
+[[Article 1]](https://towardsdatascience.com/image-to-image-translation-using-cyclegan-model-d58cfff04755)
+[[Article 2]](https://towardsdatascience.com/cyclegan-learning-to-translate-images-without-paired-training-data-5b4e93862c8d)
 <p align="center">
     <img src="http://eriklindernoren.se/images/cyclegan.png" width="640"\>
 </p>
 
 #### Run Example
 ```
-$ cd data/
-$ bash download_cyclegan_dataset.sh monet2photo
-$ cd ../implementations/cyclegan/
-$ python3 cyclegan.py --dataset_name monet2photo
+cd data/
+bash download_cyclegan_dataset.sh monet2photo
+cd ../implementations/cyclegan/
+python3 cyclegan.py --dataset_name monet2photo
 ```
 
 <p align="center">
@@ -299,76 +244,6 @@ $ python3 cyclegan.py --dataset_name monet2photo
 <p align="center">
     Monet to photo translations.
 </p>
-
-### Deep Convolutional GAN
-_Deep Convolutional Generative Adversarial Network_
-
-#### Authors
-Alec Radford, Luke Metz, Soumith Chintala
-
-#### Abstract
-In recent years, supervised learning with convolutional networks (CNNs) has seen huge adoption in computer vision applications. Comparatively, unsupervised learning with CNNs has received less attention. In this work we hope to help bridge the gap between the success of CNNs for supervised learning and unsupervised learning. We introduce a class of CNNs called deep convolutional generative adversarial networks (DCGANs), that have certain architectural constraints, and demonstrate that they are a strong candidate for unsupervised learning. Training on various image datasets, we show convincing evidence that our deep convolutional adversarial pair learns a hierarchy of representations from object parts to scenes in both the generator and discriminator. Additionally, we use the learned features for novel tasks - demonstrating their applicability as general image representations.
-
-[[Paper]](https://arxiv.org/abs/1511.06434) [[Code]](implementations/dcgan/dcgan.py)
-
-#### Run Example
-```
-$ cd implementations/dcgan/
-$ python3 dcgan.py
-```
-
-<p align="center">
-    <img src="assets/dcgan.gif" width="240"\>
-</p>
-
-### DiscoGAN
-_Learning to Discover Cross-Domain Relations with Generative Adversarial Networks_
-
-#### Authors
-Taeksoo Kim, Moonsu Cha, Hyunsoo Kim, Jung Kwon Lee, Jiwon Kim
-
-#### Abstract
-While humans easily recognize relations between data from different domains without any supervision, learning to automatically discover them is in general very challenging and needs many ground-truth pairs that illustrate the relations. To avoid costly pairing, we address the task of discovering cross-domain relations given unpaired data. We propose a method based on generative adversarial networks that learns to discover relations between different domains (DiscoGAN). Using the discovered relations, our proposed network successfully transfers style from one domain to another while preserving key attributes such as orientation and face identity.
-
-[[Paper]](https://arxiv.org/abs/1703.05192) [[Code]](implementations/discogan/discogan.py)
-
-<p align="center">
-    <img src="http://eriklindernoren.se/images/discogan_architecture.png" width="640"\>
-</p>
-
-#### Run Example
-```
-$ cd data/
-$ bash download_pix2pix_dataset.sh edges2shoes
-$ cd ../implementations/discogan/
-$ python3 discogan.py --dataset_name edges2shoes
-```
-
-<p align="center">
-    <img src="assets/discogan.png" width="480"\>
-</p>
-<p align="center">
-    Rows from top to bottom: (1) Real image from domain A (2) Translated image from <br>
-    domain A (3) Reconstructed image from domain A (4) Real image from domain B (5) <br>
-    Translated image from domain B (6) Reconstructed image from domain B
-</p>
-
-### DRAGAN
-_On Convergence and Stability of GANs_
-
-#### Authors
-Naveen Kodali, Jacob Abernethy, James Hays, Zsolt Kira
-
-#### Abstract
-We propose studying GAN training dynamics as regret minimization, which is in contrast to the popular view that there is consistent minimization of a divergence between real and generated distributions. We analyze the convergence of GAN training from this new point of view to understand why mode collapse happens. We hypothesize the existence of undesirable local equilibria in this non-convex game to be responsible for mode collapse. We observe that these local equilibria often exhibit sharp gradients of the discriminator function around some real data points. We demonstrate that these degenerate local equilibria can be avoided with a gradient penalty scheme called DRAGAN. We show that DRAGAN enables faster training, achieves improved stability with fewer mode collapses, and leads to generator networks with better modeling performance across a variety of architectures and objective functions.
-
-[[Paper]](https://arxiv.org/abs/1705.07215) [[Code]](implementations/dragan/dragan.py)
-
-#### Run Example
-```
-$ cd implementations/dragan/
-$ python3 dragan.py
-```
 
 ### DualGAN
 _DualGAN: Unsupervised Dual Learning for Image-to-Image Translation_
@@ -381,32 +256,15 @@ Conditional Generative Adversarial Networks (GANs) for cross-domain image-to-ima
 
 [[Paper]](https://arxiv.org/abs/1704.02510) [[Code]](implementations/dualgan/dualgan.py)
 
-
+[[Article]](https://github.com/duxingren14/DualGAN/wiki/DualGAN)
+ [[video]](https://www.youtube.com/watch?v=kTYGh3DUJBI)
 #### Run Example
 ```
-$ cd data/
-$ bash download_pix2pix_dataset.sh facades
-$ cd ../implementations/dualgan/
-$ python3 dualgan.py --dataset_name facades
+cd data/
+bash download_pix2pix_dataset.sh facades
+cd ../implementations/dualgan/
+python dualgan.py --dataset_name facades
 ```
-
-### Energy-Based GAN
-_Energy-based Generative Adversarial Network_
-
-#### Authors
-Junbo Zhao, Michael Mathieu, Yann LeCun
-
-#### Abstract
-We introduce the "Energy-based Generative Adversarial Network" model (EBGAN) which views the discriminator as an energy function that attributes low energies to the regions near the data manifold and higher energies to other regions. Similar to the probabilistic GANs, a generator is seen as being trained to produce contrastive samples with minimal energies, while the discriminator is trained to assign high energies to these generated samples. Viewing the discriminator as an energy function allows to use a wide variety of architectures and loss functionals in addition to the usual binary classifier with logistic output. Among them, we show one instantiation of EBGAN framework as using an auto-encoder architecture, with the energy being the reconstruction error, in place of the discriminator. We show that this form of EBGAN exhibits more stable behavior than regular GANs during training. We also show that a single-scale architecture can be trained to generate high-resolution images.
-
-[[Paper]](https://arxiv.org/abs/1609.03126) [[Code]](implementations/ebgan/ebgan.py)
-
-#### Run Example
-```
-$ cd implementations/ebgan/
-$ python3 ebgan.py
-```
-
 ### Enhanced Super-Resolution GAN
 _ESRGAN: Enhanced Super-Resolution Generative Adversarial Networks_
 
@@ -418,12 +276,12 @@ The Super-Resolution Generative Adversarial Network (SRGAN) is a seminal work th
 
 [[Paper]](https://arxiv.org/abs/1809.00219) [[Code]](implementations/esrgan/esrgan.py)
 
-
+[[Article]](https://medium.com/syncedreview/enhanced-super-resolution-gan-remasters-max-payne-1feb0ebb0c81)
 #### Run Example
 ```
-$ cd implementations/esrgan/
+cd implementations/esrgan/
 <follow steps at the top of esrgan.py>
-$ python3 esrgan.py
+python esrgan.py
 ```
 
 <p align="center">
@@ -433,57 +291,6 @@ $ python3 esrgan.py
     Nearest Neighbor Upsampling | ESRGAN
 </p>
 
-### GAN
-_Generative Adversarial Network_
-
-#### Authors
-Ian J. Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley, Sherjil Ozair, Aaron Courville, Yoshua Bengio
-
-#### Abstract
-We propose a new framework for estimating generative models via an adversarial process, in which we simultaneously train two models: a generative model G that captures the data distribution, and a discriminative model D that estimates the probability that a sample came from the training data rather than G. The training procedure for G is to maximize the probability of D making a mistake. This framework corresponds to a minimax two-player game. In the space of arbitrary functions G and D, a unique solution exists, with G recovering the training data distribution and D equal to 1/2 everywhere. In the case where G and D are defined by multilayer perceptrons, the entire system can be trained with backpropagation. There is no need for any Markov chains or unrolled approximate inference networks during either training or generation of samples. Experiments demonstrate the potential of the framework through qualitative and quantitative evaluation of the generated samples.
-
-[[Paper]](https://arxiv.org/abs/1406.2661) [[Code]](implementations/gan/gan.py)
-
-#### Run Example
-```
-$ cd implementations/gan/
-$ python3 gan.py
-```
-
-<p align="center">
-    <img src="assets/gan.gif" width="240"\>
-</p>
-
-### InfoGAN
-_InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets_
-
-#### Authors
-Xi Chen, Yan Duan, Rein Houthooft, John Schulman, Ilya Sutskever, Pieter Abbeel
-
-#### Abstract
-This paper describes InfoGAN, an information-theoretic extension to the Generative Adversarial Network that is able to learn disentangled representations in a completely unsupervised manner. InfoGAN is a generative adversarial network that also maximizes the mutual information between a small subset of the latent variables and the observation. We derive a lower bound to the mutual information objective that can be optimized efficiently, and show that our training procedure can be interpreted as a variation of the Wake-Sleep algorithm. Specifically, InfoGAN successfully disentangles writing styles from digit shapes on the MNIST dataset, pose from lighting of 3D rendered images, and background digits from the central digit on the SVHN dataset. It also discovers visual concepts that include hair styles, presence/absence of eyeglasses, and emotions on the CelebA face dataset. Experiments show that InfoGAN learns interpretable representations that are competitive with representations learned by existing fully supervised methods.
-
-[[Paper]](https://arxiv.org/abs/1606.03657) [[Code]](implementations/infogan/infogan.py)
-
-#### Run Example
-```
-$ cd implementations/infogan/
-$ python3 infogan.py
-```
-
-<p align="center">
-    <img src="assets/infogan.gif" width="360"\>
-</p>
-<p align="center">
-    Result of varying categorical latent variable by column.
-</p>
-
-<p align="center">
-    <img src="assets/infogan.png" width="360"\>
-</p>
-<p align="center">
-    Result of varying continuous latent variable by row.
-</p>
 
 ### Least Squares GAN
 _Least Squares Generative Adversarial Networks_
@@ -496,10 +303,11 @@ Unsupervised learning with generative adversarial networks (GANs) has proven hug
 
 [[Paper]](https://arxiv.org/abs/1611.04076) [[Code]](implementations/lsgan/lsgan.py)
 
+[[Article]](https://medium.com/cindicator/least-squares-gan-gan-of-the-week-42e3e8a9441b)
 #### Run Example
 ```
-$ cd implementations/lsgan/
-$ python3 lsgan.py
+cd implementations/lsgan/
+python lsgan.py
 ```
 
 
@@ -514,12 +322,13 @@ Unsupervised image-to-image translation is an important and challenging problem 
 
 [[Paper]](https://arxiv.org/abs/1804.04732) [[Code]](implementations/munit/munit.py)
 
+[[Further Read]](https://github.com/nvlabs/MUNIT)
 #### Run Example
 ```
-$ cd data/
-$ bash download_pix2pix_dataset.sh edges2shoes
-$ cd ../implementations/munit/
-$ python3 munit.py --dataset_name edges2shoes
+cd data/
+bash download_pix2pix_dataset.sh edges2shoes
+cd ../implementations/munit/
+python munit.py --dataset_name edges2shoes
 ```
 
 <p align="center">
@@ -540,16 +349,17 @@ We investigate conditional adversarial networks as a general-purpose solution to
 
 [[Paper]](https://arxiv.org/abs/1611.07004) [[Code]](implementations/pix2pix/pix2pix.py)
 
+[[Article]](https://phillipi.github.io/pix2pix/)
 <p align="center">
     <img src="http://eriklindernoren.se/images/pix2pix_architecture.png" width="640"\>
 </p>
 
 #### Run Example
 ```
-$ cd data/
-$ bash download_pix2pix_dataset.sh facades
-$ cd ../implementations/pix2pix/
-$ python3 pix2pix.py --dataset_name facades
+cd data/
+bash download_pix2pix_dataset.sh facades
+cd ../implementations/pix2pix/
+python pix2pix.py --dataset_name facades
 ```
 
 <p align="center">
@@ -558,37 +368,6 @@ $ python3 pix2pix.py --dataset_name facades
 <p align="center">
     Rows from top to bottom: (1) The condition for the generator (2) Generated image <br>
     based of condition (3) The true corresponding image to the condition
-</p>
-
-### PixelDA
-_Unsupervised Pixel-Level Domain Adaptation with Generative Adversarial Networks_
-
-#### Authors
-Konstantinos Bousmalis, Nathan Silberman, David Dohan, Dumitru Erhan, Dilip Krishnan
-
-#### Abstract
-Collecting well-annotated image datasets to train modern machine learning algorithms is prohibitively expensive for many tasks. One appealing alternative is rendering synthetic data where ground-truth annotations are generated automatically. Unfortunately, models trained purely on rendered images often fail to generalize to real images. To address this shortcoming, prior work introduced unsupervised domain adaptation algorithms that attempt to map representations between the two domains or learn to extract features that are domain-invariant. In this work, we present a new approach that learns, in an unsupervised manner, a transformation in the pixel space from one domain to the other. Our generative adversarial network (GAN)-based method adapts source-domain images to appear as if drawn from the target domain. Our approach not only produces plausible samples, but also outperforms the state-of-the-art on a number of unsupervised domain adaptation scenarios by large margins. Finally, we demonstrate that the adaptation process generalizes to object classes unseen during training.
-
-[[Paper]](https://arxiv.org/abs/1612.05424) [[Code]](implementations/pixelda/pixelda.py)
-
-#### MNIST to MNIST-M Classification
-Trains a classifier on images that have been translated from the source domain (MNIST) to the target domain (MNIST-M) using the annotations of the source domain images. The classification network is trained jointly with the generator network to optimize the generator for both providing a proper domain translation and also for preserving the semantics of the source domain image. The classification network trained on translated images is compared to the naive solution of training a classifier on MNIST and evaluating it on MNIST-M. The naive model manages a 55% classification accuracy on MNIST-M while the one trained during domain adaptation achieves a 95% classification accuracy.
-
-```
-$ cd implementations/pixelda/
-$ python3 pixelda.py
-```  
-| Method       | Accuracy  |
-| ------------ |:---------:|
-| Naive        | 55%       |
-| PixelDA      | 95%       |
-
-<p align="center">
-    <img src="assets/pixelda.png" width="480"\>
-</p>
-<p align="center">
-    Rows from top to bottom: (1) Real images from MNIST (2) Translated images from <br>
-    MNIST to MNIST-M (3) Examples of images from MNIST-M
 </p>
 
 ### Relativistic GAN
@@ -605,71 +384,13 @@ Empirically, we observe that 1) RGANs and RaGANs are significantly more stable a
 
 [[Paper]](https://arxiv.org/abs/1807.00734) [[Code]](implementations/relativistic_gan/relativistic_gan.py)
 
+[[Article]](https://medium.com/@jonathan_hui/gan-rsgan-ragan-a-new-generation-of-cost-function-84c5374d3c6e)
 #### Run Example
 ```
-$ cd implementations/relativistic_gan/
-$ python3 relativistic_gan.py                 # Relativistic Standard GAN
-$ python3 relativistic_gan.py --rel_avg_gan   # Relativistic Average GAN
+cd implementations/relativistic_gan/
+python relativistic_gan.py                 # Relativistic Standard GAN
+python relativistic_gan.py --rel_avg_gan   # Relativistic Average GAN
 ```
-
-### Semi-Supervised GAN
-_Semi-Supervised Generative Adversarial Network_
-
-#### Authors
-Augustus Odena
-
-#### Abstract
-We extend Generative Adversarial Networks (GANs) to the semi-supervised context by forcing the discriminator network to output class labels. We train a generative model G and a discriminator D on a dataset with inputs belonging to one of N classes. At training time, D is made to predict which of N+1 classes the input belongs to, where an extra class is added to correspond to the outputs of G. We show that this method can be used to create a more data-efficient classifier and that it allows for generating higher quality samples than a regular GAN.
-
-[[Paper]](https://arxiv.org/abs/1606.01583) [[Code]](implementations/sgan/sgan.py)
-
-#### Run Example
-```
-$ cd implementations/sgan/
-$ python3 sgan.py
-```
-
-### Softmax GAN
-_Softmax GAN_
-
-#### Authors
-Min Lin
-
-#### Abstract
-Softmax GAN is a novel variant of Generative Adversarial Network (GAN). The key idea of Softmax GAN is to replace the classification loss in the original GAN with a softmax cross-entropy loss in the sample space of one single batch. In the adversarial learning of N real training samples and M generated samples, the target of discriminator training is to distribute all the probability mass to the real samples, each with probability 1M, and distribute zero probability to generated data. In the generator training phase, the target is to assign equal probability to all data points in the batch, each with probability 1M+N. While the original GAN is closely related to Noise Contrastive Estimation (NCE), we show that Softmax GAN is the Importance Sampling version of GAN. We futher demonstrate with experiments that this simple change stabilizes GAN training.
-
-[[Paper]](https://arxiv.org/abs/1704.06191) [[Code]](implementations/softmax_gan/softmax_gan.py)
-
-#### Run Example
-```
-$ cd implementations/softmax_gan/
-$ python3 softmax_gan.py
-```
-
-### StarGAN
-_StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation_
-
-#### Authors
-Yunjey Choi, Minje Choi, Munyoung Kim, Jung-Woo Ha, Sunghun Kim, Jaegul Choo
-
-#### Abstract
-Recent studies have shown remarkable success in image-to-image translation for two domains. However, existing approaches have limited scalability and robustness in handling more than two domains, since different models should be built independently for every pair of image domains. To address this limitation, we propose StarGAN, a novel and scalable approach that can perform image-to-image translations for multiple domains using only a single model. Such a unified model architecture of StarGAN allows simultaneous training of multiple datasets with different domains within a single network. This leads to StarGAN's superior quality of translated images compared to existing models as well as the novel capability of flexibly translating an input image to any desired target domain. We empirically demonstrate the effectiveness of our approach on a facial attribute transfer and a facial expression synthesis tasks.
-
-[[Paper]](https://arxiv.org/abs/1711.09020) [[Code]](implementations/stargan/stargan.py)
-
-#### Run Example
-```
-$ cd implementations/stargan/
-<follow steps at the top of stargan.py>
-$ python3 stargan.py
-```
-
-<p align="center">
-    <img src="assets/stargan.png" width="640"\>
-</p>
-<p align="center">
-    Original | Black Hair | Blonde Hair | Brown Hair | Gender Flip | Aged
-</p>
 
 ### Super-Resolution GAN
 _Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network_
@@ -682,15 +403,16 @@ Despite the breakthroughs in accuracy and speed of single image super-resolution
 
 [[Paper]](https://arxiv.org/abs/1609.04802) [[Code]](implementations/srgan/srgan.py)
 
+[[Further Read]](https://github.com/tensorlayer/srgan)
 <p align="center">
     <img src="http://eriklindernoren.se/images/superresgan.png" width="640"\>
 </p>
 
 #### Run Example
 ```
-$ cd implementations/srgan/
+cd implementations/srgan/
 <follow steps at the top of srgan.py>
-$ python3 srgan.py
+python srgan.py
 ```
 
 <p align="center">
@@ -711,29 +433,13 @@ Unsupervised image-to-image translation aims at learning a joint distribution of
 
 [[Paper]](https://arxiv.org/abs/1703.00848) [[Code]](implementations/unit/unit.py)
 
+[[Article]](https://github.com/mingyuliutw/UNIT)
 #### Run Example
 ```
-$ cd data/
-$ bash download_cyclegan_dataset.sh apple2orange
-$ cd implementations/unit/
-$ python3 unit.py --dataset_name apple2orange
-```
-
-### Wasserstein GAN
-_Wasserstein GAN_
-
-#### Authors
-Martin Arjovsky, Soumith Chintala, Léon Bottou
-
-#### Abstract
-We introduce a new algorithm named WGAN, an alternative to traditional GAN training. In this new model, we show that we can improve the stability of learning, get rid of problems like mode collapse, and provide meaningful learning curves useful for debugging and hyperparameter searches. Furthermore, we show that the corresponding optimization problem is sound, and provide extensive theoretical work highlighting the deep connections to other distances between distributions.
-
-[[Paper]](https://arxiv.org/abs/1701.07875) [[Code]](implementations/wgan/wgan.py)
-
-#### Run Example
-```
-$ cd implementations/wgan/
-$ python3 wgan.py
+cd data/
+bash download_cyclegan_dataset.sh apple2orange
+cd implementations/unit/
+python3 unit.py --dataset_name apple2orange
 ```
 
 ### Wasserstein GAN GP
@@ -747,34 +453,13 @@ Generative Adversarial Networks (GANs) are powerful generative models, but suffe
 
 [[Paper]](https://arxiv.org/abs/1704.00028) [[Code]](implementations/wgan_gp/wgan_gp.py)
 
+[[Article]](https://medium.com/@jonathan_hui/gan-wasserstein-gan-wgan-gp-6a1a2aa1b490)
 #### Run Example
 ```
-$ cd implementations/wgan_gp/
-$ python3 wgan_gp.py
+cd implementations/wgan_gp/
+python wgan_gp.py
 ```
 
 <p align="center">
     <img src="assets/wgan_gp.gif" width="240"\>
-</p>
-
-### Wasserstein GAN DIV
-_Wasserstein Divergence for GANs_
-
-#### Authors
-Jiqing Wu, Zhiwu Huang, Janine Thoma, Dinesh Acharya, Luc Van Gool
-
-#### Abstract
-In many domains of computer vision, generative adversarial networks (GANs) have achieved great success, among which the fam-
-ily of Wasserstein GANs (WGANs) is considered to be state-of-the-art due to the theoretical contributions and competitive qualitative performance. However, it is very challenging to approximate the k-Lipschitz constraint required by the Wasserstein-1 metric (W-met). In this paper, we propose a novel Wasserstein divergence (W-div), which is a relaxed version of W-met and does not require the k-Lipschitz constraint.As a concrete application, we introduce a Wasserstein divergence objective for GANs (WGAN-div), which can faithfully approximate W-div through optimization. Under various settings, including progressive growing training, we demonstrate the stability of the proposed WGAN-div owing to its theoretical and practical advantages over WGANs. Also, we study the quantitative and visual performance of WGAN-div on standard image synthesis benchmarks, showing the superior performance of WGAN-div compared to the state-of-the-art methods.
-
-[[Paper]](https://arxiv.org/abs/1712.01026) [[Code]](implementations/wgan_div/wgan_div.py)
-
-#### Run Example
-```
-$ cd implementations/wgan_div/
-$ python3 wgan_div.py
-```
-
-<p align="center">
-    <img src="assets/wgan_div.png" width="240"\>
 </p>

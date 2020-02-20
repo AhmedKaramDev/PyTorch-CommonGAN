@@ -36,13 +36,14 @@ parser.add_argument("--b2", type=float, default=0.999, help="adam: decay of firs
 parser.add_argument("--n_cpu", type=int, default=8, help="number of cpu threads to use during batch generation")
 parser.add_argument("--img_size", type=int, default=128, help="size of each image dimension")
 parser.add_argument("--channels", type=int, default=3, help="number of image channels")
+parser.add_argument("--output", type=str, default="images", help="output of images")
 parser.add_argument("--n_critic", type=int, default=5, help="number of training steps for discriminator per iter")
 parser.add_argument("--sample_interval", type=int, default=200, help="interval betwen image samples")
 parser.add_argument("--checkpoint_interval", type=int, default=-1, help="interval between model checkpoints")
 opt = parser.parse_args()
 print(opt)
 
-os.makedirs("images/%s" % opt.dataset_name, exist_ok=True)
+os.makedirs("{}/%s".format(opt.output) % opt.dataset_name, exist_ok=True)
 os.makedirs("saved_models/%s" % opt.dataset_name, exist_ok=True)
 
 img_shape = (opt.channels, opt.img_size, opt.img_size)
@@ -145,7 +146,7 @@ def sample_images(batches_done):
     fake_A = G_BA(real_B)
     BA = torch.cat((real_B.data, fake_A.data), -2)
     img_sample = torch.cat((AB, BA), 0)
-    save_image(img_sample, "images/%s/%s.png" % (opt.dataset_name, batches_done), nrow=8, normalize=True)
+    save_image(img_sample, "{}/%s/%s.png".format(opt.output) % (opt.dataset_name, batches_done), nrow=8, normalize=True)
 
 
 # ----------

@@ -28,8 +28,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 
-os.makedirs("images/training", exist_ok=True)
-os.makedirs("saved_models", exist_ok=True)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--epoch", type=int, default=0, help="epoch to start training from")
@@ -44,6 +42,7 @@ parser.add_argument("--n_cpu", type=int, default=8, help="number of cpu threads 
 parser.add_argument("--hr_height", type=int, default=256, help="high res. image height")
 parser.add_argument("--hr_width", type=int, default=256, help="high res. image width")
 parser.add_argument("--channels", type=int, default=3, help="number of image channels")
+parser.add_argument("--output", type=str, default="images", help="output of images")
 parser.add_argument("--sample_interval", type=int, default=100, help="interval between saving image samples")
 parser.add_argument("--checkpoint_interval", type=int, default=5000, help="batch interval between model checkpoints")
 parser.add_argument("--residual_blocks", type=int, default=23, help="number of residual blocks in the generator")
@@ -52,6 +51,8 @@ parser.add_argument("--lambda_adv", type=float, default=5e-3, help="adversarial 
 parser.add_argument("--lambda_pixel", type=float, default=1e-2, help="pixel-wise loss weight")
 opt = parser.parse_args()
 print(opt)
+os.makedirs("{}/training".format(opt.output), exist_ok=True)
+os.makedirs("saved_models", exist_ok=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -187,7 +188,7 @@ for epoch in range(opt.epoch, opt.n_epochs):
             # Save image grid with upsampled inputs and ESRGAN outputs
             imgs_lr = nn.functional.interpolate(imgs_lr, scale_factor=4)
             img_grid = denormalize(torch.cat((imgs_lr, gen_hr), -1))
-            save_image(img_grid, "images/training/%d.png" % batches_done, nrow=1, normalize=False)
+            save_image(img_grid, "{}/training/%d.png".format(opt.output) % batches_done, nrow=1, normalize=False)
 
         if batches_done % opt.checkpoint_interval == 0:
             # Save model checkpoints
