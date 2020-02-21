@@ -15,7 +15,7 @@ for image_type in ["jpg", "png", "jpeg"]:
     for img in images_list:
         try:
             image = cv2.imread(img)
-            re_img = cv2.resize(image, (512, 512))
+            re_img = cv2.resize(image, (opt.img_size, opt.img_size))
             cv2.imwrite("{}/{}/{}.{}".format(opt.data, opt.output, i, image_type), re_img)
             i+=1
 

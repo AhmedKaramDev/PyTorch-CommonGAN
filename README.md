@@ -71,7 +71,7 @@ Change From MNIST to real images by replace this
     shuffle=True,)
 By this code
 
-    data_dir = 'data/dataset_name'
+    data_dir = '../../data/dataset_name'
     dataloader = torch.utils.data.DataLoader(
     datasets.ImageFolder(
         data_dir,
