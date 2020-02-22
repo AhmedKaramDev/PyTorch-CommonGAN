@@ -6,7 +6,7 @@ Collection of PyTorch implementations of Generative Adversarial Network varietie
 
 <b>See also:</b> [Keras-GAN](https://github.com/eriklindernoren/Keras-GAN)
 
-#### This Repo Forked From PyTorch GAN Master 
+#### This Repo Forked From PyTorch GAN Master
 ### What Did I Add ?(AhmedKaramDev)
    * Select the best GAN algorithms
    * Add an article for each algorithm
@@ -14,7 +14,7 @@ Collection of PyTorch implementations of Generative Adversarial Network varietie
    * Add dataset description on the `README` file
    * How to change MNIST dataset into real image dataset
    * Add `resize_images.py` file to
-      
+
 ## Table of Contents
   * [Installation](#installation)
   * [Dataset](#dataset)
@@ -36,13 +36,13 @@ Collection of PyTorch implementations of Generative Adversarial Network varietie
     + [UNIT](#unit)
     + [Wasserstein GAN GP](#wasserstein-gan-gp)
 ## Installation
-    git clone https://github.com/eriklindernoren/PyTorch-GAN
+    git clone git@github.com:AhmedKaramDev/PyTorch-CommonGAN.git
     cd PyTorch-GAN/
     pip install -r requirements.txt
 
 ## dataset
 The data folder must be in this structure
-    
+
     Data Folder
         |_ Dataset_folder
                         |_ Images_folder
@@ -50,13 +50,13 @@ The data folder must be in this structure
                                            x2.png
                                            ......
                                            xy.png
-                                           
-        
+
+
 The images must be in the same size to resize the images
-    
+
     python resize_images.py  --data data/datafolder --image_size 128
-        
-Change From MNIST to real images by replace this 
+
+Change From MNIST to real images by replace this
 
     dataloader = torch.utils.data.DataLoader(
     datasets.MNIST(
